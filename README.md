@@ -7,4 +7,4 @@ Mandatory
  - opendata key from Tisséo (for bus data), https://data.toulouse-metropole.fr/explore/dataset/api-temps-reel-tisseo/
  - opendata key from Decaux (for bikes data), https://developer.jcdecaux.com/#/home
 
-Live example, better seen from a mobile device: http://www.17o2.net/now.php
+Live example, better seen from a mobile device: http://www.17o2.net/akero.php
