@@ -187,7 +187,7 @@ function getBus($nb) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NOW</title>
+<title>AKERO</title>
 <style>
 body {
     font-family: sans-serif;
