@@ -171,14 +171,12 @@ function getBus($nb) {
         }
     }
     $data = getJSON("https://api.tisseo.fr/v1/stops_schedules.json?&stopsList=".implode(",", $v)."&timetableByArea=1&number=".$nb."&key=".$OD_KEY_TISSEO);
-//    print_r($data);
     foreach ($data["departures"]["stopAreas"] as $k)
         foreach ($k["schedules"] as $d) {
             $BUS[$d["line"]["shortName"]]["color"] = $d["line"]["bgXmlColor"];
             foreach ($d["journeys"] as $t)
                 $BUS[$d["line"]["shortName"]]["stops"][$d["stop"]["name"]][$d["destination"]["name"]]["when"][] = $t["dateTime"];
         }
-//    print_r($BUS);
 }
 
 ?>
@@ -195,80 +193,89 @@ body {
     color: #839496;
 }
 .section, .data {
-  width: 95%;
-  padding: 1px;
+    width: 95%;
+    padding: 1px;
 }
 .section {
-  margin : auto;
+    margin : auto;
 }
 .data {
-  width: 100%;
-  height: <?php print($SIZE); ?>px;
-  line-height: <?php print($SIZE); ?>px;
-  max-height: <?php print($SIZE); ?>px;
-  margin: 0px;
-  border-top: 1px solid #ccc;
-      padding: 2px;
+    width: 100%;
+    height: <?php print($SIZE); ?>px;
+    line-height: <?php print($SIZE); ?>px;
+    max-height: <?php print($SIZE); ?>px;
+    margin: 0px;
+    border-top: 1px solid #ccc;
+    padding: 2px;
 }
 .bus, .velo, .where, .when {
-      height: <?php print($SIZE); ?>px;
-      line-height: <?php print($SIZE); ?>px;
-      max-height: <?php print($SIZE); ?>px;
-      margin: 0px;
-      padding: 0px;
-      display: block;
-      float: left;
+    height: <?php print($SIZE); ?>px;
+    line-height: <?php print($SIZE); ?>px;
+    max-height: <?php print($SIZE); ?>px;
+    margin: 0px;
+    padding: 0px;
+    display: block;
+    float: left;
  }
 .bus, .velo {
-  color: #eeeeee;
-  width: <?php print($SIZE); ?>px;
-  text-align: center;
-  vertical-align: middle;
-  font-size: 140%;
+    color: #eeeeee;
+    width: <?php print($SIZE); ?>px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 140%;
 }
 .velo {
     background-color: #b22615;
- }
-      .where {
-      width: 100px;
-      margin-left: 5px;
-      }
-      .when {
-      text-align: left;
-      vertical-align: middle;
-      margin-left: 5px;
-      white-space: nowrap;
-      overflow: hidden;
-      font-size: 110%;
-      }
-      .from, .to {
-      height: <?php print($SIZE / 2); ?>px;
-      line-height: <?php print($SIZE / 2); ?>px;
-      max-height: <?php print($SIZE / 2); ?>px;
-      margin: 0px;
-      padding: 0px;
-      display: block;
-      text-align: left;
-      vertical-align: middle;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      }
-      .from {
-      font-size: 115%;
-      color: #A3B4B6;
-      }
-      .to {
-      font-size: 75%;
-      color: #738486;
-      }
-    </style>
-  </head>
-  <body>
+}
+.where {
+    width: 100px;
+    margin-left: 5px;
+}
+.when {
+    text-align: left;
+    vertical-align: middle;
+    margin-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 110%;
+}
+.from, .to {
+    height: <?php print($SIZE / 2); ?>px;
+    line-height: <?php print($SIZE / 2); ?>px;
+    max-height: <?php print($SIZE / 2); ?>px;
+    margin: 0px;
+    padding: 0px;
+    display: block;
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.from {
+    font-size: 115%;
+    color: #A3B4B6;
+}
+.to {
+    font-size: 75%;
+    color: #738486;
+}
+p {
+    text-align: center;
+    margin-bottom: 0px;
+    margin-top: 3px;
+}
+a {
+    text-decoration: none;
+    color: #ABBCBE;
+}
+</style>
+</head>
+<body>
 <?php
 getBus($NBBUS);
 ?>
-    <div class="section">
+<div class="section">
 <?php
 printBus("23", "Assalit", "Rangueil");
 printBus("23", "Capdenier", "Jeanne d'Arc");
@@ -280,10 +287,10 @@ printBus("L1", "Jean Jaurès", "Gymnase de L'Hers");
 printBike(214, "Achiary");
 printBike(211, "Dormeur");
 ?>
-    </div>
+</div>
 <?php
-print('<p style="text-align:center;font-size:55%">Donn&eacute;es Tiss&eacute;o (license <a href="https://imsva91-ctp.trendmicro.com/wis/clicktime/v1/query?url=http%3a%2f%2fdata.toulouse%2dmetropole.fr%2fla%2dlicence%29.&umid=8C995A8E-3FEC-2E05-B7BF-47E8C000740D&auth=f2b449ca55614c68587e7992fdd805265a7028cb-7ae7d71587d3daaa0cc2462521d5dfdc704f56a0">ODbl</a>) + Donn&eacute;es JCDecaux</p>');
-print('<p style="text-align:center;font-size:50%">Generated in '.(microtime(true) - $timestart).' seconds</p>');
+print('<p style="font-size:55%;">Donn&eacute;es Tiss&eacute;o (license <a href="https://imsva91-ctp.trendmicro.com/wis/clicktime/v1/query?url=http%3a%2f%2fdata.toulouse%2dmetropole.fr%2fla%2dlicence%29.&umid=8C995A8E-3FEC-2E05-B7BF-47E8C000740D&auth=f2b449ca55614c68587e7992fdd805265a7028cb-7ae7d71587d3daaa0cc2462521d5dfdc704f56a0">ODbl</a>) + Donn&eacute;es JCDecaux</p>');
+print('<p style="font-size:50%;">Generated in '.(microtime(true) - $timestart).' seconds::::<a href="https://github.com/er-1/akero">GitHub</a></p>');
 ?>
-  </body>
+</body>
 </html>
