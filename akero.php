@@ -1,9 +1,10 @@
 <?php
 $timestart = microtime(true);
-$SIZE = 50;
-$NBBUS = 3;
-$OD_KEY_DECAUX = "your key opendata from Decaux";
-$OD_KEY_TISSEO = "your key opendata from Tisséo";
+
+define("SIZE",          50);
+define("NBBUS",         3);
+define("OD_KEY_DECAUX", "efc83baf431770b1066c383c7b4a33aea3bf5057");
+define("OD_KEY_TISSEO", "46fef012-016c-4a40-98a8-bf7ffbbc186d");
  
 $BUS = array(
     "22" => array(
@@ -116,9 +117,7 @@ function printLine($logo, $from, $to, $when, $hl = false) {
 }
 
 function printBike($id, $station) {
-    global $OD_KEY_DECAUX;
-    
-    $data = getJSON("https://api.jcdecaux.com/vls/v1/stations/".$id."?contract=Toulouse&apiKey=".$OD_KEY_DECAUX);
+    $data = getJSON("https://api.jcdecaux.com/vls/v1/stations/".$id."?contract=Toulouse&apiKey=".OD_KEY_DECAUX);
     $txt = "";
     if (count($data) <= 0) {
         $txt = "no data";
@@ -158,8 +157,8 @@ function printBus($line, $stop, $destination) {
     );
 }
 
-function getBus($nb) {
-    global $BUS, $OD_KEY_TISSEO;
+function getBus($nb = NBBUS) {
+    global $BUS;
     
     $v = array();
     foreach ($BUS as $b) {
@@ -170,7 +169,7 @@ function getBus($nb) {
             }
         }
     }
-    $data = getJSON("https://api.tisseo.fr/v1/stops_schedules.json?&stopsList=".implode(",", $v)."&timetableByArea=1&number=".$nb."&key=".$OD_KEY_TISSEO);
+    $data = getJSON("https://api.tisseo.fr/v1/stops_schedules.json?&stopsList=".implode(",", $v)."&timetableByArea=1&number=".$nb."&key=".OD_KEY_TISSEO);
     foreach ($data["departures"]["stopAreas"] as $k)
         foreach ($k["schedules"] as $d) {
             $BUS[$d["line"]["shortName"]]["color"] = $d["line"]["bgXmlColor"];
@@ -201,17 +200,17 @@ body {
 }
 .data {
     width: 100%;
-    height: <?php print($SIZE); ?>px;
-    line-height: <?php print($SIZE); ?>px;
-    max-height: <?php print($SIZE); ?>px;
+    height: <?php print(SIZE); ?>px;
+    line-height: <?php print(SIZE); ?>px;
+    max-height: <?php print(SIZE); ?>px;
     margin: 0px;
     border-top: 1px solid #ccc;
     padding: 2px;
 }
 .bus, .velo, .where, .when {
-    height: <?php print($SIZE); ?>px;
-    line-height: <?php print($SIZE); ?>px;
-    max-height: <?php print($SIZE); ?>px;
+    height: <?php print(SIZE); ?>px;
+    line-height: <?php print(SIZE); ?>px;
+    max-height: <?php print(SIZE); ?>px;
     margin: 0px;
     padding: 0px;
     display: block;
@@ -219,7 +218,7 @@ body {
  }
 .bus, .velo {
     color: #eeeeee;
-    width: <?php print($SIZE); ?>px;
+    width: <?php print(SIZE); ?>px;
     text-align: center;
     vertical-align: middle;
     font-size: 140%;
@@ -240,9 +239,9 @@ body {
     font-size: 110%;
 }
 .from, .to {
-    height: <?php print($SIZE / 2); ?>px;
-    line-height: <?php print($SIZE / 2); ?>px;
-    max-height: <?php print($SIZE / 2); ?>px;
+    height: <?php print(SIZE / 2); ?>px;
+    line-height: <?php print(SIZE / 2); ?>px;
+    max-height: <?php print(SIZE / 2); ?>px;
     margin: 0px;
     padding: 0px;
     display: block;
@@ -273,7 +272,7 @@ a {
 </head>
 <body>
 <?php
-getBus($NBBUS);
+getBus();
 ?>
 <div class="section">
 <?php
