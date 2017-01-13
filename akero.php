@@ -24,6 +24,13 @@ $BUS = array(
         "id" => "11821949023193145",
         "color" => "#aaaaaa",
         "stops" => array(
+            "Achiary" => array(
+                "Rangueil" => array(
+                    "id" => "3377699720881223",
+                    "when" => array(),
+                    "HL" => array(8, 9),
+                ),
+            ),
             "Assalit" => array(
                 "Jeanne d'Arc" => array(
                     "id" => "3377699720883038",
@@ -277,6 +284,7 @@ getBus();
 <div class="section">
 <?php
 printBus("23", "Assalit", "Rangueil");
+printBus("23", "Achiary", "Rangueil");
 printBus("23", "Capdenier", "Jeanne d'Arc");
 printBus("10", "Bajac", "Cours Dillon");
 printBus("22", "Corraze", "Marengo-SNCF");
