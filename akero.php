@@ -3,8 +3,8 @@ $timestart = microtime(true);
 
 define("SIZE",          50);
 define("NBBUS",         3);
-define("OD_KEY_DECAUX", "efc83baf431770b1066c383c7b4a33aea3bf5057");
-define("OD_KEY_TISSEO", "46fef012-016c-4a40-98a8-bf7ffbbc186d");
+define("OD_KEY_DECAUX", "<your key from Decaux>");
+define("OD_KEY_TISSEO", "<your key from Tisseo>");
  
 $BUS = array(
     "22" => array(
