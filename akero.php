@@ -43,6 +43,13 @@ $BUS = array(
                     "HL" => array(8, 9),
                 ),
             ),
+            "Baroux" => array(
+                "Rangueil" => array(
+                    "id" => "1970324837186037",
+                    "when" => array(),
+                    "HL" => array(8, 10),
+                ),
+            ),
             "Capdenier" => array(
                 "Jeanne d'Arc" => array(
                     "id" => "3377699723785428",
@@ -283,12 +290,13 @@ getBus();
 ?>
 <div class="section">
 <?php
-printBus("23", "Assalit", "Rangueil");
-printBus("23", "Achiary", "Rangueil");
-printBus("23", "Capdenier", "Jeanne d'Arc");
-printBus("10", "Bajac", "Cours Dillon");
-printBus("22", "Corraze", "Marengo-SNCF");
-printBus("23", "Assalit", "Jeanne d'Arc");
+printBus("23", "Assalit",     "Rangueil");
+printBus("23", "Achiary",     "Rangueil");
+printBus("23", "Baroux",      "Rangueil");
+printBus("23", "Capdenier",   "Jeanne d'Arc");
+printBus("10", "Bajac",       "Cours Dillon");
+printBus("22", "Corraze",     "Marengo-SNCF");
+printBus("23", "Assalit",     "Jeanne d'Arc");
 printBus("23", "Jean Jaurès", "Rangueil");
 printBus("L1", "Jean Jaurès", "Gymnase de L'Hers");
 printBike(214, "Achiary");
