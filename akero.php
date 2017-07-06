@@ -47,7 +47,7 @@ $BUS = array(
                 "Rangueil" => array(
                     "id" => "1970324837186037",
                     "when" => array(),
-                    "HL" => array(8, 10),
+                    "HL" => array(8, 9),
                 ),
             ),
             "Capdenier" => array(
