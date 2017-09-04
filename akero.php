@@ -7,13 +7,13 @@ define("OD_KEY_DECAUX", "<your key from Decaux>");
 define("OD_KEY_TISSEO", "<your key from Tisseo>");
  
 $BUS = array(
-    "22" => array(
-        "id" => "11821949021891631",
+    "L8" => array(
+        "id" => "11821953316814891",
         "color" => "#aaaaaa",
         "stops" => array(
             "Corraze" => array(
                 "Marengo-SNCF" => array(
-                    "id" => "3377699720880679",
+                    "id" => "1970324837184638",
                     "when" => array(),
                     "HL" => array(17, 18),
                 ),
@@ -66,13 +66,13 @@ $BUS = array(
             ),
         ),
     ),
-    "10" => array(
-        "id" => "11821949021891619",
+    "L7" => array(
+        "id" => "11821953316814890",
         "color" => "#aaaaaa",
         "stops" => array(
             "Bajac" => array(
                 "Cours Dillon" => array(
-                    "id" => "3377699720884480",
+                    "id" => "1970324837186820",
                     "when" => array(),
                     "HL" => array(17, 18),
                 ),
@@ -294,8 +294,8 @@ printBus("23", "Assalit",     "Rangueil");
 printBus("23", "Achiary",     "Rangueil");
 printBus("23", "Baroux",      "Rangueil");
 printBus("23", "Capdenier",   "Jeanne d'Arc");
-printBus("10", "Bajac",       "Cours Dillon");
-printBus("22", "Corraze",     "Marengo-SNCF");
+printBus("L7", "Bajac",       "Cours Dillon");
+printBus("L8", "Corraze",     "Marengo-SNCF");
 printBus("23", "Assalit",     "Jeanne d'Arc");
 printBus("23", "Jean Jaurès", "Rangueil");
 printBus("L1", "Jean Jaurès", "Gymnase de L'Hers");
