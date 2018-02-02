@@ -1,98 +1,30 @@
 <?php
 $timestart = microtime(true);
 
+//error_reporting(E_ALL);
+//ini_set('display_errors', 'On');
+//ini_set('log_errors', 'On');
+
 define("SIZE",          50);
 define("NBBUS",         3);
+define("BUS_CONF",      ".tisseo");
+define("DEFAULT_COLOR", "#aaaaaa");
 define("OD_KEY_DECAUX", "<your key from Decaux>");
 define("OD_KEY_TISSEO", "<your key from Tisseo>");
- 
-$BUS = array(
-    "L8" => array(
-        "id" => "11821953316814891",
-        "color" => "#aaaaaa",
-        "stops" => array(
-            "Corraze" => array(
-                "Marengo-SNCF" => array(
-                    "id" => "1970324837184638",
-                    "when" => array(),
-                    "HL" => array(17, 18),
-                ),
-            ),
-        ),
-    ),
-    "23" => array(
-        "id" => "11821949023193145",
-        "color" => "#aaaaaa",
-        "stops" => array(
-            "Achiary" => array(
-                "Rangueil" => array(
-                    "id" => "3377699720881223",
-                    "when" => array(),
-                    "HL" => array(8, 9),
-                ),
-            ),
-            "Assalit" => array(
-                "Jeanne d'Arc" => array(
-                    "id" => "3377699720883038",
-                    "when" => array(),
-                    "HL" => array(),
-                ),
-                "Rangueil"     => array(
-                    "id" => "3377699720883037",
-                    "when" => array(),
-                    "HL" => array(8, 9),
-                ),
-            ),
-            "Baroux" => array(
-                "Rangueil" => array(
-                    "id" => "1970324837186037",
-                    "when" => array(),
-                    "HL" => array(8, 9),
-                ),
-            ),
-            "Capdenier" => array(
-                "Jeanne d'Arc" => array(
-                    "id" => "3377699723785428",
-                    "when" => array(),
-                    "HL" => array(17, 18),
-                ),
-            ),
-            "Jean Jaurès" => array(
-                "Rangueil" => array(
-                    "id" => "3377699721881197",
-                    "when" => array(),
-                    "HL" => array(),
-                ),
-            ),
-        ),
-    ),
-    "L7" => array(
-        "id" => "11821953316814890",
-        "color" => "#aaaaaa",
-        "stops" => array(
-            "Bajac" => array(
-                "Cours Dillon" => array(
-                    "id" => "1970324837186820",
-                    "when" => array(),
-                    "HL" => array(17, 18),
-                ),
-            ),
-        ),
-    ),
-    "L1" => array(
-        "id" => "11821953316814883",
-        "color" => "#aaaaaa",
-        "stops" => array(
-            "Jean Jaurès" => array(
-                "Gymnase de L'Hers" => array(
-                    "id" => "3377699721902047",
-                    "when" => array(),
-                    "HL" => array(),
-                ),
-            ),
-        ),
-    ),
-);
+
+define("CONFIG", array(
+    array("Corraze",     "Marengo-SNCF",      array(17, 18)),
+    array("Achiary",     "Rangueil",          array(8, 9)),
+    array("Assalit",     "Jeanne d'Arc",      array()),
+    array("Assalit",     "Rangueil",          array(8, 9)),
+    array("Baroux",      "Rangueil",          array(8, 9)),
+    array("Capdenier",   "Jeanne d'Arc",      array(17, 18)),
+    array("Jean Jaurès", "Rangueil",          array()),
+    array("Bajac",       "Cours Dillon",      array(17, 18)),
+    array("Jean Jaurès", "Gymnase de L'Hers", array())
+));
+
+////////////////////////////////////////////////////////////////////////////////
 
 if (stripos($_SERVER['HTTP_USER_AGENT'], "google") !== false) {
 ?>
@@ -108,6 +40,29 @@ if (stripos($_SERVER['HTTP_USER_AGENT'], "google") !== false) {
     exit(0);
 }
 
+$BUS = array();
+
+function getCache() {
+    global $BUS;
+
+    if (count($BUS) > 0) return;
+    $file = @file(BUS_CONF);
+    if ($file !== false) {
+        $s = "";
+        foreach($file as $l)
+            $s .= $l;
+        $BUS = json_decode($s, true);
+    }
+}
+
+function saveCache() {
+    global $BUS;
+
+    $file = fopen(BUS_CONF, "w");
+    fwrite($file, json_encode($BUS, JSON_PRETTY_PRINT));
+    fclose($file);
+}
+
 function getJSON($url) {
     $content = file_get_contents($url);
     if ($content === false)
@@ -115,7 +70,7 @@ function getJSON($url) {
     return json_decode($content, true);
 }
 
-function printLine($logo, $from, $to, $when, $hl = false) {
+function printLine($logo, $from, $to, $when, $hl = false, $eta = false) {
     print("<div class=\"data\">\n");
     print($logo."\n");
 	print("<div class=\"where\">\n");
@@ -123,9 +78,9 @@ function printLine($logo, $from, $to, $when, $hl = false) {
 	printf("<div class=\"to\">%s</div>\n", $to);
 	print("</div>\n");
     $s ="";
-    if ($hl) {
-        $s = "style=\"color: #ffffff;\"";
-    }
+    if ($hl) $s .= "color: #ffffff;";
+    if ($eta) $s .= "font-size: 200%;";
+    if (strlen($s) > 0) $s = "style=\"$s\"";
 	printf("<div class=\"when\" %s>%s</div>\n", $s, $when);
     print("</div>\n");
 }
@@ -156,24 +111,48 @@ function printBike($id, $station) {
     );
 }
 
-function printBus($line, $stop, $destination) {
+function printBus($stop, $destination, $eta = false) {
     global $BUS;
 
+    $line = "";
+    foreach($BUS as $k => $v) {
+        if (!array_key_exists($stop, $v["stops"])) continue;
+        if (!array_key_exists($destination, $v["stops"][$stop])) continue;
+        $line = $k;
+        break;
+    }
+    if (! $line) return;
+    $now = intval(date("G")) * 60 + intval(date("i"));
     $w = array();
-    foreach ($BUS[$line]["stops"][$stop][$destination]["when"] as $v)
-        $w[] = substr($v, 11, 5);
+    foreach ($BUS[$line]["stops"][$stop][$destination]["when"] as $v) {
+        $str = substr($v, 11, 5);
+        if ($eta) {
+            $str = intval(substr($str, 0, 2)) * 60 + intval(substr($str, 3, 2));
+            if ($str >= $now)
+                $str = $str - $now;
+            else
+                $str = 24 * 60 - $now + $str;
+            if ($str >= 100)
+                $str = "--";
+            else
+                if ($str < 10) $str = sprintf("&nbsp;%d", $str);
+        }
+        $w[] = $str;
+    }
     printLine(
         sprintf("<div class=\"bus\" style=\"background-color: %s;\">%s</div>", $BUS[$line]["color"], $line),
         $stop,
         $destination,
         implode(" ", $w),
-        in_array(intval(date("G")), $BUS[$line]["stops"][$stop][$destination]["HL"])
+        in_array(intval(date("G")), $BUS[$line]["stops"][$stop][$destination]["HL"]),
+        $eta
     );
 }
 
 function getBus($nb = NBBUS) {
     global $BUS;
-    
+
+    if (count($BUS) <= 0) return;
     $v = array();
     foreach ($BUS as $b) {
         $lid = $b["id"];
@@ -192,12 +171,58 @@ function getBus($nb = NBBUS) {
         }
 }
 
+// 0: config to cache (and phone display)
+// 1: phone display (default)
+// 2: Pi display
+$what = 1;
+if (array_key_exists("K", $_REQUEST)) {
+    $str = chop($_REQUEST["K"]);
+    if (($str == 0) || ($str == 2)) $what = $str;
+}
+if ($what == 0) {
+    $stops = getJSON("https://api.tisseo.fr/v1/stop_areas.json?&key=".OD_KEY_TISSEO);
+    foreach(CONFIG as $v) {
+        $id = "";
+        foreach($stops["stopAreas"]["stopArea"] as $s) {
+            if ($s["name"] != $v[0]) continue;
+            $id = $s["id"];
+            break;
+        }
+        if (! $id) continue;
+        $data = getJSON("https://api.tisseo.fr/v1/stops_schedules.json?&stopsList=".$id."&timetableByArea=1&key=".OD_KEY_TISSEO);
+        foreach($data["departures"]["stopAreas"][0]["schedules"] as $s) {
+            if ($s["destination"]["name"] != $v[1]) continue;
+            $line = $s["line"]["shortName"];
+            $color = $s["line"]["color"];
+            $lineid = $s["line"]["id"];
+            $stopid = $s["stop"]["id"];
+            if (! array_key_exists($line, $BUS))
+                $BUS[$line] = array(
+                    "id" => $lineid,
+                    "color" => $color,
+                    "stops" => array()
+                );
+            if (! array_key_exists($v[0], $BUS[$line]["stops"]))
+                $BUS[$line]["stops"][$v[0]] = array();
+            if (! array_key_exists($v[1], $BUS[$line]["stops"][$v[0]]))
+                $BUS[$line]["stops"][$v[0]][$v[1]] = array(
+                    "id" => $stopid,
+                    "when" => array(),
+                    "HL" => $v[2]
+                );
+            break;
+        }
+    }
+    saveCache();
+    $what = 1;
+}
 ?>
 <!doctype html>
 <html> 
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="refresh" content="60;">
 <title>AKERO</title>
 <style>
 body {
@@ -241,10 +266,15 @@ body {
     background-color: #b22615;
 }
 .where {
-    width: 100px;
+    width: 80px;
     margin-left: 5px;
 }
+@font-face {
+    font-family: "mymenlo";
+    src: url(menlo.ttf) format("truetype");
+}
 .when {
+    font-family: mymenlo;
     text-align: left;
     vertical-align: middle;
     margin-left: 5px;
@@ -286,26 +316,38 @@ a {
 </head>
 <body>
 <?php
+getCache();
 getBus();
 ?>
 <div class="section">
 <?php
-printBus("23", "Assalit",     "Rangueil");
-printBus("23", "Achiary",     "Rangueil");
-printBus("23", "Baroux",      "Rangueil");
-printBus("23", "Capdenier",   "Jeanne d'Arc");
-printBus("L7", "Bajac",       "Cours Dillon");
-printBus("L8", "Corraze",     "Marengo-SNCF");
-printBus("23", "Assalit",     "Jeanne d'Arc");
-printBus("23", "Jean Jaurès", "Rangueil");
-printBus("L1", "Jean Jaurès", "Gymnase de L'Hers");
-printBike(214, "Achiary");
-printBike(211, "Dormeur");
+if ($what == 1) {
+    printBus("Assalit",     "Rangueil");
+    printBus("Achiary",     "Rangueil");
+    printBus("Baroux",      "Rangueil");
+    printBus("Capdenier",   "Jeanne d'Arc");
+    printBus("Bajac",       "Cours Dillon");
+    printBus("Corraze",     "Marengo-SNCF");
+    printBus("Assalit",     "Jeanne d'Arc");
+    printBus("Jean Jaurès", "Rangueil");
+    printBus("Jean Jaurès", "Gymnase de L'Hers");
+    printBike(214, "Achiary");
+    printBike(211, "Dormeur");
+}
+if ($what == 2) {
+    printBus("Assalit", "Rangueil",     true);
+    printBus("Achiary", "Rangueil",     true);
+    printBus("Assalit", "Jeanne d'Arc", true);
+}
 ?>
 </div>
 <?php
-print('<p style="font-size:55%;">Donn&eacute;es Tiss&eacute;o (license <a href="https://imsva91-ctp.trendmicro.com/wis/clicktime/v1/query?url=http%3a%2f%2fdata.toulouse%2dmetropole.fr%2fla%2dlicence%29.&umid=8C995A8E-3FEC-2E05-B7BF-47E8C000740D&auth=f2b449ca55614c68587e7992fdd805265a7028cb-7ae7d71587d3daaa0cc2462521d5dfdc704f56a0">ODbl</a>) + Donn&eacute;es JCDecaux</p>');
-print('<p style="font-size:50%;">Generated in '.(microtime(true) - $timestart).' seconds::::<a href="https://github.com/er-1/akero">GitHub</a></p>');
+if ($what != 2) {
+?>
+    <p style="font-size:55%;">Donn&eacute;es Tiss&eacute;o (license <a href="https://imsva91-ctp.trendmicro.com/wis/clicktime/v1/query?url=http%3a%2f%2fdata.toulouse%2dmetropole.fr%2fla%2dlicence%29.&umid=8C995A8E-3FEC-2E05-B7BF-47E8C000740D&auth=f2b449ca55614c68587e7992fdd805265a7028cb-7ae7d71587d3daaa0cc2462521d5dfdc704f56a0">ODbl</a>) + Donn&eacute;es JCDecaux</p>
+    <p style="font-size:50%;">Generated in <?php print(microtime(true) - $timestart); ?> seconds::::<a href="https://github.com/er-1/akero">GitHub</a></p>
+<?php
+}
 ?>
 </body>
 </html>
