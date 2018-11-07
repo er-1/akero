@@ -1,11 +1,15 @@
 <?php
 $timestart = microtime(true);
+$midori = stripos($_SERVER["HTTP_USER_AGENT"], "midori") !== False;
 
 //error_reporting(E_ALL);
 //ini_set('display_errors', 'On');
 //ini_set('log_errors', 'On');
 
-define("SIZE",          50);
+if ($midori)
+    define("SIZE", 150);
+else
+    define("SIZE", 50);
 define("NBBUS",         3);
 define("BUS_CONF",      ".tisseo");
 define("DEFAULT_COLOR", "#aaaaaa");
@@ -71,6 +75,8 @@ function getJSON($url) {
 }
 
 function printLine($logo, $from, $to, $when, $hl = false, $eta = false) {
+    global $midori;
+
     print("<div class=\"data\">\n");
     print($logo."\n");
 	print("<div class=\"where\">\n");
@@ -78,8 +84,12 @@ function printLine($logo, $from, $to, $when, $hl = false, $eta = false) {
 	printf("<div class=\"to\">%s</div>\n", $to);
 	print("</div>\n");
     $s ="";
-    if ($hl) $s .= "color: #ffffff;";
-    if ($eta) $s .= "font-size: 200%;";
+    if ($hl) $s .= "color:#ffffff;";
+    if ($eta)
+        if (! $midori)
+            $s .= "font-size:200%;";
+        else
+            $s .= "font-size:600%;font-weight:bold;";
     if (strlen($s) > 0) $s = "style=\"$s\"";
 	printf("<div class=\"when\" %s>%s</div>\n", $s, $when);
     print("</div>\n");
@@ -230,6 +240,7 @@ body {
     background-color: #002b36;
     color: #839496;
 }
+<?php if (! $midori) { ?>
 .section, .data {
     width: 95%;
     padding: 1px;
@@ -237,6 +248,7 @@ body {
 .section {
     margin : auto;
 }
+<?php } ?>
 .data {
     width: 100%;
     height: <?php print(SIZE); ?>px;
@@ -260,14 +272,24 @@ body {
     width: <?php print(SIZE); ?>px;
     text-align: center;
     vertical-align: middle;
+<?php if (! $midori) { ?>
     font-size: 140%;
+<?php } else { ?>
+    font-size: 420%;
+    font-weight: bold;
+<?php } ?>
 }
 .velo {
     background-color: #b22615;
 }
 .where {
-    width: 80px;
+<?php if (! $midori) { ?>
+    width: 75px;
     margin-left: 5px;
+<?php } else { ?>
+    width: 240px;
+    margin-left: 15px;
+<?php } ?>
 }
 @font-face {
     font-family: "mymenlo";
@@ -280,7 +302,11 @@ body {
     margin-left: 5px;
     white-space: nowrap;
     overflow: hidden;
+<?php if (! $midori) { ?>
     font-size: 110%;
+<?php } else { ?>
+    font-size: 330%;
+<?php } ?>
 }
 .from, .to {
     height: <?php print(SIZE / 2); ?>px;
@@ -296,11 +322,19 @@ body {
     text-overflow: ellipsis;
 }
 .from {
+<?php if (! $midori) { ?>
     font-size: 115%;
+<?php } else { ?>
+    font-size: 345%;
+<?php } ?>
     color: #A3B4B6;
 }
 .to {
+<?php if (! $midori) { ?>
     font-size: 75%;
+<?php } else { ?>
+    font-size: 225%;
+<?php } ?>
     color: #738486;
 }
 p {
