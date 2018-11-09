@@ -112,6 +112,7 @@ function printBike($id, $station) {
         default:
             $txt = sprintf("%d bikes", $v);
         }
+        $txt = "&nbsp;&nbsp;" . $txt;
     }
     printLine(
         "<div class=\"velo\"><img src=\"velo.ico\"></div>",
@@ -257,6 +258,7 @@ body {
     margin: 0px;
     border-top: 1px solid #ccc;
     padding: 2px;
+    position: relative;
 }
 .bus, .velo, .where, .when {
     height: <?php print(SIZE); ?>px;
@@ -283,11 +285,10 @@ body {
     background-color: #b22615;
 }
 .where {
+    opacity: 0.5;
 <?php if (! $midori) { ?>
-    width: 75px;
     margin-left: 5px;
 <?php } else { ?>
-    width: 240px;
     margin-left: 15px;
 <?php } ?>
 }
@@ -299,19 +300,18 @@ body {
     font-family: mymenlo;
     text-align: left;
     vertical-align: middle;
-    margin-left: 5px;
     white-space: nowrap;
     overflow: hidden;
+    position: absolute;
 <?php if (! $midori) { ?>
-    font-size: 110%;
+    font-size: 120%;
+    left: <?php print(SIZE + 80); ?>px;
 <?php } else { ?>
-    font-size: 330%;
+    font-size: 340%;
+    left: <?php print(SIZE + 240); ?>px;
 <?php } ?>
 }
 .from, .to {
-    height: <?php print(SIZE / 2); ?>px;
-    line-height: <?php print(SIZE / 2); ?>px;
-    max-height: <?php print(SIZE / 2); ?>px;
     margin: 0px;
     padding: 0px;
     display: block;
@@ -319,21 +319,26 @@ body {
     vertical-align: middle;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 .from {
+    height: <?php print(SIZE * 0.6); ?>px;
+    line-height: <?php print(SIZE * 0.6); ?>px;
+    max-height: <?php print(SIZE * 0.6); ?>px;
 <?php if (! $midori) { ?>
-    font-size: 115%;
+    font-size: 130%;
 <?php } else { ?>
-    font-size: 345%;
+    font-size: 360%;
 <?php } ?>
     color: #A3B4B6;
 }
 .to {
+    height: <?php print(SIZE * 0.4); ?>px;
+    line-height: <?php print(SIZE * 0.4); ?>px;
+    max-height: <?php print(SIZE * 0.4); ?>px;
 <?php if (! $midori) { ?>
-    font-size: 75%;
+    font-size: 70%;
 <?php } else { ?>
-    font-size: 225%;
+    font-size: 220%;
 <?php } ?>
     color: #738486;
 }
