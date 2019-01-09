@@ -18,12 +18,12 @@ define("OD_KEY_TISSEO", "<your key from Tisseo>");
 
 define("CONFIG", array(
     array("Corraze",     "Marengo-SNCF",             array(17, 18)),
-    array("Achiary",     "Université Paul Sabatier", array(7, 8, 9)),
+    array("Achiary",     "Rangueil",                 array(7, 8, 9)),
     array("Assalit",     "Jeanne d'Arc",             array()),
-    array("Assalit",     "Université Paul Sabatier", array(7, 8, 9)),
-    array("Baroux",      "Université Paul Sabatier", array(7, 8, 9)),
+    array("Assalit",     "Rangueil",                 array(7, 8, 9)),
+    array("Baroux",      "Rangueil",                 array(7, 8, 9)),
     array("Capdenier",   "Jeanne d'Arc",             array(17, 18)),
-    array("Jean Jaurès", "Université Paul Sabatier", array()),
+    array("Jean Jaurès", "Rangueil",                 array()),
     array("Bajac",       "Cours Dillon",             array(17, 18)),
     array("Jean Jaurès", "Gymnase de L'Hers",        array())
 ));
@@ -361,21 +361,21 @@ getBus();
 <div class="section">
 <?php
 if ($what == 1) {
-    printBus("Assalit",     "Université Paul Sabatier");
-    printBus("Achiary",     "Université Paul Sabatier");
-    printBus("Baroux",      "Université Paul Sabatier");
+    printBus("Assalit",     "Rangueil");
+    printBus("Achiary",     "Rangueil");
+    printBus("Baroux",      "Rangueil");
     printBus("Capdenier",   "Jeanne d'Arc");
     printBus("Bajac",       "Cours Dillon");
     printBus("Corraze",     "Marengo-SNCF");
     printBus("Assalit",     "Jeanne d'Arc");
-    printBus("Jean Jaurès", "Université Paul Sabatier");
+    printBus("Jean Jaurès", "Rangueil");
     printBus("Jean Jaurès", "Gymnase de L'Hers");
     printBike(214, "Achiary");
     printBike(211, "Dormeur");
 }
 if ($what == 2) {
-    printBus("Assalit", "Université Paul Sabatier", true);
-    printBus("Achiary", "Université Paul Sabatier", true);
+    printBus("Assalit", "Rangueil", true);
+    printBus("Achiary", "Rangueil", true);
     printBus("Assalit", "Jeanne d'Arc",             true);
 }
 ?>
