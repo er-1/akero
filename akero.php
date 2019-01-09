@@ -25,7 +25,7 @@ define("CONFIG", array(
     array("Capdenier",   "Jeanne d'Arc",             array(17, 18)),
     array("Jean Jaurès", "Rangueil",                 array()),
     array("Bajac",       "Cours Dillon",             array(17, 18)),
-    array("Jean Jaurès", "Gymnase de L'Hers",        array())
+    array("Jean Jaurès", "Gymnase de l'Hers",        array())
 ));
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -195,6 +195,7 @@ if ($what == 0) {
     foreach(CONFIG as $v) {
         $id = "";
         foreach($stops["stopAreas"]["stopArea"] as $s) {
+            if ($s["cityName"] != "TOULOUSE") continue;
             if ($s["name"] != $v[0]) continue;
             $id = $s["id"];
             break;
@@ -369,7 +370,7 @@ if ($what == 1) {
     printBus("Corraze",     "Marengo-SNCF");
     printBus("Assalit",     "Jeanne d'Arc");
     printBus("Jean Jaurès", "Rangueil");
-    printBus("Jean Jaurès", "Gymnase de L'Hers");
+    printBus("Jean Jaurès", "Gymnase de l'Hers");
     printBike(214, "Achiary");
     printBike(211, "Dormeur");
 }
