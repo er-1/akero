@@ -17,15 +17,17 @@ define("OD_KEY_DECAUX", "<your key from Decaux>");
 define("OD_KEY_TISSEO", "<your key from Tisseo>");
 
 define("CONFIG", array(
-    array("Corraze",     "Marengo-SNCF",             array(17, 18)),
-    array("Achiary",     "Rangueil",                 array(7, 8, 9)),
-    array("Assalit",     "Jeanne d'Arc",             array()),
-    array("Assalit",     "Rangueil",                 array(7, 8, 9)),
-    array("Baroux",      "Rangueil",                 array(7, 8, 9)),
-    array("Capdenier",   "Jeanne d'Arc",             array(17, 18)),
-    array("Jean Jaurès", "Rangueil",                 array()),
-    array("Bajac",       "Cours Dillon",             array(17, 18)),
-    array("Jean Jaurès", "Gymnase de l'Hers",        array())
+    array("Assalit",         "Jeanne d'Arc",                 array(7, 8, 9)),
+    array("Jeanne d'Arc",    "Aéroport",                     array(7, 8, 9)),
+    array("Aéroport",        "Fenouillet Centre Commercial", array(7, 8, 9)),
+    
+    array("Raymong Grimaud", "Aéroport",                     array(17, 18, 19)),
+    array("Aéroport",        "Gare routière",                array(17, 18, 19)),
+    array("Jeanne d'Arc",    "Rangueil",                     array(17, 18, 19)),
+
+    array("Assalit",         "Rangueil",                     array()),
+    array("Jean Jaurès",     "Rangueil",                     array()),
+    array("Jean Jaurès",     "Gymnase de l'Hers",            array())
 ));
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -195,7 +197,7 @@ if ($what == 0) {
     foreach(CONFIG as $v) {
         $id = "";
         foreach($stops["stopAreas"]["stopArea"] as $s) {
-            if ($s["cityName"] != "TOULOUSE") continue;
+//            if ($s["cityName"] != "TOULOUSE") continue;
             if ($s["name"] != $v[0]) continue;
             $id = $s["id"];
             break;
@@ -362,22 +364,24 @@ getBus();
 <div class="section">
 <?php
 if ($what == 1) {
-    printBus("Assalit",     "Rangueil");
-    printBus("Achiary",     "Rangueil");
-    printBus("Baroux",      "Rangueil");
-    printBus("Capdenier",   "Jeanne d'Arc");
-    printBus("Bajac",       "Cours Dillon");
-    printBus("Corraze",     "Marengo-SNCF");
-    printBus("Assalit",     "Jeanne d'Arc");
-    printBus("Jean Jaurès", "Rangueil");
-    printBus("Jean Jaurès", "Gymnase de l'Hers");
+    printBus("Assalit",         "Jeanne d'Arc");
+    printBus("Jeanne d'Arc",    "Aéroport");
+    printBus("Aéroport",        "Fenouillet Centre Commercial");
+
+    printBus("Raymond Grimaud", "Aéroport");
+    printBus("Aéroport",        "Gare routière");
+    printBus("Jeanne d'Arc",    "Rangueil");
+    
+    printBus("Assalit",         "Rangueil");
+    printBus("Jean Jaurès",     "Rangueil");
+    printBus("Jean Jaurès",     "Gymnase de l'Hers");
+
     printBike(214, "Achiary");
-    printBike(211, "Dormeur");
 }
 if ($what == 2) {
-    printBus("Assalit", "Rangueil", true);
-    printBus("Achiary", "Rangueil", true);
-    printBus("Assalit", "Jeanne d'Arc",             true);
+    printBus("Assalit",         "Jeanne d'Arc", true);
+    printBus("Jeanne d'Arc",    "Aéroport",     true);
+    printBus("Assalit",         "Rangueil",     true);
 }
 ?>
 </div>
