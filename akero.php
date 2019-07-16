@@ -25,6 +25,7 @@ define("CONFIG", array(
     array("Aéroport",        "Gare routière",                array(17, 18, 19)),
     array("Jeanne d'Arc",    "Rangueil",                     array(17, 18, 19)),
 
+    array("Providence",      "Rangueil",                     array()),
     array("Assalit",         "Rangueil",                     array()),
     array("Jean Jaurès",     "Rangueil",                     array()),
     array("Jean Jaurès",     "Gymnase de l'Hers",            array())
@@ -372,6 +373,7 @@ if ($what == 1) {
     printBus("Aéroport",        "Gare routière");
     printBus("Jeanne d'Arc",    "Rangueil");
     
+    printBus("Providence",      "Rangueil");
     printBus("Assalit",         "Rangueil");
     printBus("Jean Jaurès",     "Rangueil");
     printBus("Jean Jaurès",     "Gymnase de l'Hers");
