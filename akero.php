@@ -17,18 +17,19 @@ define("OD_KEY_DECAUX", "<your key from Decaux>");
 define("OD_KEY_TISSEO", "<your key from Tisseo>");
 
 define("CONFIG", array(
-    array("Assalit",         "Jeanne d'Arc",                 array(7, 8, 9)),
-    array("Jeanne d'Arc",    "Aéroport",                     array(7, 8, 9)),
-    array("Aéroport",        "Fenouillet Centre Commercial", array(7, 8, 9)),
+    array("Assalit",         "Jeanne d'Arc",                 array(7, 8)),
+    array("Tilleuls",        "Sept Deniers - Salvador Dali", array(7, 8)),
+    array("Jeanne d'Arc",    "Aéroport",                     array(7, 8)),
+    array("Aéroport",        "Fenouillet Centre Commercial", array(7, 8),   "BLAGNAC"),
     
-    array("Raymong Grimaud", "Aéroport",                     array(17, 18, 19)),
-    array("Aéroport",        "Gare routière",                array(17, 18, 19)),
-    array("Jeanne d'Arc",    "Rangueil",                     array(17, 18, 19)),
+    array("Raymong Grimaud", "Aéroport",                     array(17, 18), "BLAGNAC"),
+    array("Aéroport",        "Gare routière",                array(17, 18), "BLAGNAC"),
+    array("Jeanne d'Arc",    "Rangueil",                     array(17, 18)),
+    array("Jeanne d'Arc",    "Fonsegrives Entiore",          array(17, 18)),
 
     array("Providence",      "Rangueil",                     array()),
     array("Assalit",         "Rangueil",                     array()),
     array("Jean Jaurès",     "Rangueil",                     array()),
-    array("Jean Jaurès",     "Gymnase de l'Hers",            array())
 ));
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -202,7 +203,9 @@ if ($what == 0) {
     foreach(CONFIG as $v) {
         $id = "";
         foreach($stops["stopAreas"]["stopArea"] as $s) {
-//            if ($s["cityName"] != "TOULOUSE") continue;
+            $city = "TOULOUSE";
+            if (count($v) > 3) $city = $v[3];
+            if ($s["cityName"] != $city) continue;
             if ($s["name"] != $v[0]) continue;
             $id = $s["id"];
             break;
@@ -370,17 +373,18 @@ getBus();
 <?php
 if ($what == 1) {
     printBus("Assalit",         "Jeanne d'Arc");
+    printBus("Tilleuls",        "Sept Deniers - Salvador Dali");
     printBus("Jeanne d'Arc",    "Aéroport");
     printBus("Aéroport",        "Fenouillet Centre Commercial");
     printSpace();
     printBus("Raymond Grimaud", "Aéroport");
     printBus("Aéroport",        "Gare routière");
     printBus("Jeanne d'Arc",    "Rangueil");
+    printBus("Jeanne d'Arc",    "Fonsegrives Entiore");
     printSpace();
     printBus("Providence",      "Rangueil");
     printBus("Assalit",         "Rangueil");
     printBus("Jean Jaurès",     "Rangueil");
-    printBus("Jean Jaurès",     "Gymnase de l'Hers");
     printSpace();
     printBike(214, "Achiary");
 }
