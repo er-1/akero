@@ -386,6 +386,10 @@ if ($what == 1) {
     printBus("Assalit",         "Rangueil");
     printBus("Jean Jaurès",     "Rangueil");
     printSpace();
+    printBike(176, "Cimetière");
+    printBike(40,  "Colombette");
+    printBike(16,  "Jeanne d'Arc");
+    printBike(94,  "Gare routière");
     printBike(214, "Achiary");
 }
 if ($what == 2) {
