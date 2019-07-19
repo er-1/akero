@@ -98,6 +98,10 @@ function printLine($logo, $from, $to, $when, $hl = false, $eta = false) {
     print("</div>\n");
 }
 
+function printSpace() {
+    print("<div class=\"data\" style=\"height:0px;\"></div>\n");
+}
+
 function printBike($id, $station) {
     $data = getJSON("https://api.jcdecaux.com/vls/v1/stations/".$id."?contract=Toulouse&apiKey=".OD_KEY_DECAUX);
     $txt = "";
@@ -368,23 +372,26 @@ if ($what == 1) {
     printBus("Assalit",         "Jeanne d'Arc");
     printBus("Jeanne d'Arc",    "Aéroport");
     printBus("Aéroport",        "Fenouillet Centre Commercial");
-
+    printSpace();
     printBus("Raymond Grimaud", "Aéroport");
     printBus("Aéroport",        "Gare routière");
     printBus("Jeanne d'Arc",    "Rangueil");
-    
+    printSpace();
     printBus("Providence",      "Rangueil");
     printBus("Assalit",         "Rangueil");
     printBus("Jean Jaurès",     "Rangueil");
     printBus("Jean Jaurès",     "Gymnase de l'Hers");
-
+    printSpace();
     printBike(214, "Achiary");
 }
 if ($what == 2) {
-    printBus("Assalit",         "Jeanne d'Arc", true);
-    printBus("Jeanne d'Arc",    "Aéroport",     true);
-    printBus("Assalit",         "Rangueil",     true);
+    printBus("Assalit",         "Jeanne d'Arc",                 true);
+    printBus("Tilleuls",        "Sept Deniers - Salvador Dali", true);
+    printBus("Jeanne d'Arc",    "Aéroport",                     true);
+    printSpace();
+    printBus("Assalit",         "Rangueil",                     true);
 }
+printSpace();
 ?>
 </div>
 <?php
