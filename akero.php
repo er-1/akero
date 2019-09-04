@@ -19,10 +19,11 @@ define("OD_KEY_TISSEO", "<your key from Tisseo>");
 define("CONFIG", array(
     array("Assalit",         "Jeanne d'Arc",                 array(7, 8)),
     array("Tilleuls",        "Sept Deniers - Salvador Dali", array(7, 8)),
+    array("Gare routière",   "Aéroport",                     array(7, 8)),
     array("Jeanne d'Arc",    "Aéroport",                     array(7, 8)),
     array("Aéroport",        "Fenouillet Centre Commercial", array(7, 8),   "BLAGNAC"),
     
-    array("Raymong Grimaud", "Aéroport",                     array(17, 18), "BLAGNAC"),
+    array("Raymond Grimaud", "Aéroport",                     array(17, 18), "BLAGNAC"),
     array("Aéroport",        "Gare routière",                array(17, 18), "BLAGNAC"),
     array("Jeanne d'Arc",    "Rangueil",                     array(17, 18)),
     array("Jeanne d'Arc",    "Fonsegrives Entiore",          array(17, 18)),
@@ -374,6 +375,7 @@ getBus();
 if ($what == 1) {
     printBus("Assalit",         "Jeanne d'Arc");
     printBus("Tilleuls",        "Sept Deniers - Salvador Dali");
+    printBus("Gare routière",   "Aéroport");
     printBus("Jeanne d'Arc",    "Aéroport");
     printBus("Aéroport",        "Fenouillet Centre Commercial");
     printSpace();
